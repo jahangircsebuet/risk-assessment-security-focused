@@ -34,4 +34,5 @@ def main():
     print(f"Wrote {args.out} with {len(scored)} rows.")
 
 if __name__ == "__main__":
+    # Step-1: Run scoring on the Parquet dataset
     main()

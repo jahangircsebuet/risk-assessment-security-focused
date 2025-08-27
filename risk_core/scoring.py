@@ -3,6 +3,9 @@ from typing import Dict, Any, Optional
 import pandas as pd
 import yaml
 
+
+# how to tune or learn those weights automatically (e.g., via logistic regression or AHP) 
+# instead of using fixed heuristics?
 DEFAULT_WEIGHTS = {
     # content features
     "n_emails": 3.0,
