@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 import torch
-from .ae_model import LSTMAutoencoder
+from drift.ae_model import LSTMAutoencoder
 
 def rolling_zscore(x: np.ndarray, window: int = 30) -> np.ndarray:
     z = np.zeros_like(x, dtype=float)

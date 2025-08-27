@@ -2,9 +2,9 @@
 from typing import List, Dict, Any
 import random
 import numpy as np
-from ..drift.ae_model import LSTMAutoencoder
-from .client import LocalClient
-from .privacy import PrivacyLedger
+from drift.ae_model import LSTMAutoencoder
+from federated.client import LocalClient
+from federated.privacy import PrivacyLedger
 
 def create_windows(risk_series: np.ndarray, window: int = 10) -> np.ndarray:
     risk_series = risk_series.astype(np.float32)

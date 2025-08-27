@@ -3,8 +3,8 @@ from typing import Dict, Any
 import numpy as np
 import torch
 from torch.utils.data import TensorDataset, DataLoader
-from ..drift.ae_model import LSTMAutoencoder
-from .privacy import clip_gradients, add_gaussian_noise_to_grads
+from drift.ae_model import LSTMAutoencoder
+from federated.privacy import clip_gradients, add_gaussian_noise_to_grads
 
 class LocalClient:
     """
