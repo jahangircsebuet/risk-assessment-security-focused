@@ -1,0 +1,13 @@
+digraph DriftTimeline {
+  rankdir=LR;
+  node [shape=rect, style=filled, fontsize=14, fontname="Helvetica"];
+
+  Baseline [label="Day 0–30\nBaseline", fillcolor="#c6e2ff"];
+  Mild [label="Day 31–50\nMild Drift", fillcolor="#d9f2d9"];
+  Moderate [label="Day 51–75\nModerate Drift", fillcolor="#fff3b0"];
+  Strong [label="Day 76–95\nStrong Drift", fillcolor="#ffd27f"];
+  Takeover [label="Day 96–110\nTakeover / Compromise", fillcolor="#ff9999"];
+  Recovery [label="Day 111–120\nRecovery", fillcolor="#d3caff"];
+
+  Baseline -> Mild -> Moderate -> Strong -> Takeover -> Recovery;
+}

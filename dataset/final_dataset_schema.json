@@ -1,0 +1,68 @@
+{
+  "schema_version": "cbprs-c.v2",
+  "record_id": "uuid-or-hash",
+  "user": {
+    "user_id": "user_01",
+    "archetype": "student|professional|older_adult|business_owner|activist",
+    "privacy_awareness": "low|medium|high",
+    "assigned_threat": "T1|T2|...|T12"
+  },
+  "time": {
+    "day_index": 1,
+    "date": "YYYY-MM-DD",
+    "hour": 0
+  },
+  "post": {
+    "post_id": "uuid-or-hash",
+    "text": "10–25 words, unique across dataset",
+    "visibility": "public|friends|private",
+    "category": "A|B|C|D|E",
+    "language": "en",
+    "contains_pii": true,
+    "pii_type": "email|phone|address|ID|coordinate|none",
+    "sensitive_disclosure_type": "none|health|finance|employment|legal_immigration|relationship",
+    "location_exposure": false,
+    "location_hint": "none|place_name|city|venue|travel_update",
+    "external_surface": false,
+    "urls": ["https://example.com/x", "https://bit.ly/abc"],
+    "contextual_cues_present": [
+      "distress_cues",
+      "urgency_panic_cues",
+      "crisis_impulsivity_cues",
+      "coercion_solicitation_cues",
+      "conflict_harassment_cues",
+      "oversharing_regret_boundary_cues"
+    ],
+    "cross_platform_markers": {
+      "platform": "facebook|x|instagram|other",
+      "crosspost_group_id": "none-or-group-id",
+      "handles_mentioned": ["@handle1", "@handle2"],
+      "unique_identifiers_mentioned": ["employee_id", "student_id", "license_fragment"]
+    }
+  },
+  "platform_events_daily": {
+    "friend_requests_received": 0,
+    "friend_requests_accepted": 0,
+    "follower_additions": 0,
+    "follower_removals": 0,
+    "profile_edits": [
+      {"field": "bio|work|education|location|relationship|photo", "count": 0}
+    ],
+    "oauth_logins": 0,
+    "third_party_apps_used": ["none|spotify|strava|canva|game_app|other"],
+    "messages_from_unknown": 0,
+    "reports_or_blocks": 0
+  },
+  "telemetry_daily": {
+    "impressions_total": 0,
+    "impressions_nonfollowers": 0,
+    "profile_views": 0,
+    "link_clicks": 0
+  },
+  "labels": {
+    "drift_phase": "baseline|escalation|spike|recovery",
+    "drift_event": false,
+    "threat_type": "T1|T2|...|T12"
+  }
+}
+

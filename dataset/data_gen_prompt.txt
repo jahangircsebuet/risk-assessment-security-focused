@@ -1,0 +1,53 @@
+You are generating synthetic social media posts for research on privacy exposure modeling and CPRS-C risk estimation.
+Important: We distinguish between: (1) Direct exposure signals x(E) (linear exposure score) and (2) Contextual vulnerability cues
+x(V ) (bounded multiplicative modifiers). Do not diagnose mental health or infer latent traits; only generate observable textual content.
+Task: Generate one realistic OSN post (50–200 words, casual tone). Randomly choose one category:
+• A) Explicit PII exposure
+• B) Sensitive self-disclosure
+• C) Contextual vulnerability cues (no explicit PII)
+• D) Mixed exposure (Direct exposure + contextual cues)
+• E) Benign control (low risk)
+Controlled Direct Exposure Signals x(E):
+• Explicit PII: email / phone / address / ID / coordinate
+• Sensitive disclosure: health / finance / employment / legal_immigration / relationship
+• Location exposure (real-time presence or identifiable place) — NOT PII
+• Visibility amplifier: public > friends > private
+• External surface: URLs, contact requests, suspicious domains
+Contextual Vulnerability Cues x(V ):
+• distress_cues
+• urgency_panic_cues
+• crisis_impulsivity_cues
+• coercion_solicitation_cues
+• conflict_harassment_cues
+• oversharing_regret_boundary_cues
+Do NOT include: violence instructions, illegal guidance, unrealistic extreme content, or diagnostic claims.
+#Output Format#: Return:
+• (1) Post Text
+• (2) JSON Metadata
+{
+"category": "...",
+"contains_pii": true/false,
+"pii_type": "email/phone/address/ID/coordinate/none",
+"sensitive_disclosure_type": "none/health/finance/employment/legal_immigration/relationship",
+"location_exposure": true/false,
+"visibility": "public/friends/private",
+"external_surface": true/false,
+"contextual_cues_present": [
+"distress_cues",
+"urgency_panic_cues",
+"crisis_impulsivity_cues",
+"coercion_solicitation_cues",
+"conflict_harassment_cues",
+"oversharing_regret_boundary_cues"
+]
+}
+Consistency Rules:
+• If category = C, then contains_pii = false.
+• If category = A, then contains_pii = true.
+• If category = E, then no exposure or vulnerability signals
+
+IMPORTANT OUTPUT REQUIREMENTS (MUST FOLLOW):
+1) Output MUST be exactly ONE valid JSON object (no markdown, no extra text).
+2) The JSON must be on a single line (no newlines inside strings).
+3) Do NOT include any commas-separated lists as raw text; use JSON arrays/strings only.
+4) Ensure the JSON is parseable by json.loads without any cleanup.

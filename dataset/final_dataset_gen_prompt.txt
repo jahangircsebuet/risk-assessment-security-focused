@@ -1,0 +1,168 @@
+You are generating a synthetic social media dataset for privacy exposure modeling and CPRS-C risk estimation.
+
+IMPORTANT:
+- Generate EXACTLY 1500 JSON objects.
+- Output MUST be valid JSONL (one JSON object per line).
+- Do NOT wrap in markdown in the output (only JSONL).
+- Do NOT include explanations.
+- Each line must be parseable by json.loads.
+- No duplicate post.post_id or record_id across the dataset.
+- No duplicate post.text across the entire dataset.
+- Post text length MUST be between 10 and 25 words inclusive.
+- No unrealistic platform statements.
+- Platform events must be generated separately from text (metadata only).
+- No violence instructions, illegal guidance, or extreme content.
+- Do NOT diagnose mental health.
+- Timeline is 180 days (day_index 1–180).
+- Total objects across all users MUST sum to 1500 exactly.
+
+----------------------------------------------------
+THREAT SCENARIOS (T1–T12) — one-liner definitions
+----------------------------------------------------
+T1: Gradual oversharing—progressively more personal details and weaker privacy boundaries over time.
+T2: Compromise-like takeover—sudden style shift plus risky links/contact requests in a short burst window.
+T3: Location leakage—repeated real-time check-ins/travel updates that increase traceability.
+T4: Social engineering exposure—posts eliciting “help” or DMs that attract unknown contacts and probing questions.
+T5: Third-party app creep—rising use of external apps/OAuth logins alongside small profile edits.
+T6: Audience misconfiguration—visibility drifts toward public and more posts become broadly visible.
+T7: Relationship disclosure drift—increasing intimate relationship talk that escalates sensitivity over time.
+T8: Employment/finance leakage—more workplace details or money stress that becomes increasingly specific.
+T9: Legal/immigration disclosure drift—more administrative/legal updates that become more revealing.
+T10: Harassment/conflict escalation—more public disputes that correlate with blocking/reporting and boundary relaxation.
+T11: Identity breadcrumbing—small fragments (partial address/ID-like tokens) accumulate into identifying detail.
+T12: Cross-surface amplification—more external links and off-platform coordination that raises exposure surface.
+
+----------------------------------------------------
+USERS (5 total)
+----------------------------------------------------
+user_01: archetype="student", privacy_awareness="medium"
+user_02: archetype="professional", privacy_awareness="low"
+user_03: archetype="older_adult", privacy_awareness="high"
+user_04: archetype="business_owner", privacy_awareness="medium"
+user_05: archetype="activist", privacy_awareness="low"
+
+----------------------------------------------------
+EACH USER MUST HAVE (UPDATED)
+----------------------------------------------------
+- A 180-day timeline (day_index 1–180 with date fields).
+- Between 200 and 300 posts per user.
+- Random 0–5 posts per day with realistic bursts and silent days.
+- Exactly ONE assigned threat scenario (pick from T1–T12) per user; threats must differ across users.
+- Drift phases must be defined over the 180 days:
+  * baseline: days 1–60
+  * escalation: days 61–120
+  * spike: days 121–150
+  * recovery: days 151–180
+- Drift must be reflected in:
+  (i) post exposure signals, (ii) platform_events_daily, and (iii) telemetry_daily.
+- Ensure the sum of posts across all 5 users is EXACTLY 1500.
+
+----------------------------------------------------
+POST CONTENT REQUIREMENTS
+----------------------------------------------------
+Posts must cover:
+- everyday activities
+- personal updates
+- topical discussions
+- realistic informal tone
+
+Inject randomly when aligned with the assigned threat:
+- explicit PII (email, phone, partial address, coordinate, ID-like token)
+- sensitive disclosures (health, finance, employment, relationship, legal_immigration)
+- location mentions
+- visibility differences
+- URLs
+- contextual cues (distress, urgency, conflict, oversharing/regret/boundary cues, etc.)
+
+----------------------------------------------------
+CALIBRATION LABEL (REQUIRED)
+----------------------------------------------------
+Each record MUST include a binary risk_label computed during generation using the following deterministic rule:
+
+risk_label = 1 if contains_pii == true
+risk_label = 1 if sensitive_disclosure_type != "none"
+risk_label = 0 otherwise
+
+Important rules:
+- risk_label MUST strictly follow the logic above.
+- category alone does NOT define risk_label.
+- location_exposure alone does NOT set risk_label = 1.
+- external_surface alone does NOT set risk_label = 1.
+- contextual_cues_present alone does NOT set risk_label = 1.
+- risk_label must be consistent with metadata fields.
+
+----------------------------------------------------
+OUTPUT SCHEMA (UPDATED)
+----------------------------------------------------
+Each JSONL line must match exactly:
+
+{
+  "schema_version": "cbprs-c.v2.1",
+  "record_id": "unique-id",
+  "user": {
+    "user_id": "user_01|user_02|user_03|user_04|user_05",
+    "archetype": "...",
+    "privacy_awareness": "low|medium|high",
+    "assigned_threat": "T1|T2|...|T12"
+  },
+  "time": {
+    "day_index": 1-180,
+    "date": "YYYY-MM-DD",
+    "hour": 0-23
+  },
+  "post": {
+    "post_id": "unique-id",
+    "text": "...",
+    "visibility": "public|friends|private",
+    "category": "A|B|C|D|E",
+    "language": "en",
+    "contains_pii": true|false,
+    "pii_type": "email|phone|address|ID|coordinate|none",
+    "sensitive_disclosure_type": "none|health|finance|employment|legal_immigration|relationship",
+    "location_exposure": true|false,
+    "location_hint": "none|place_name|city|venue|travel_update",
+    "external_surface": true|false,
+    "urls": [],
+    "contextual_cues_present": []
+  },
+  "platform_events_daily": {
+    "friend_requests_received": integer,
+    "friend_requests_accepted": integer,
+    "follower_additions": integer,
+    "follower_removals": integer,
+    "profile_edits": [
+      {"field": "bio|work|education|location|relationship|photo", "count": integer}
+    ],
+    "oauth_logins": integer,
+    "third_party_apps_used": [],
+    "messages_from_unknown": integer,
+    "reports_or_blocks": integer
+  },
+  "telemetry_daily": {
+    "impressions_total": integer,
+    "impressions_nonfollowers": integer,
+    "profile_views": integer,
+    "link_clicks": integer
+  },
+  "labels": {
+    "drift_phase": "baseline|escalation|spike|recovery",
+    "drift_event": true|false,
+    "threat_type": "T1|T2|...|T12",
+    "risk_label": 0|1
+  }
+}
+
+----------------------------------------------------
+CONSISTENCY RULES
+----------------------------------------------------
+- If post.contains_pii=false → post.pii_type="none"
+- If post.category="C" → post.contains_pii=false AND post.pii_type="none"
+- If post.category="E" → no PII, no sensitive disclosure, no location_exposure, no external_surface, post.contextual_cues_present=[]
+- If post.external_surface=false → post.urls must be []
+- post.contextual_cues_present must be a JSON array (possibly empty)
+- record_id and post.post_id must be unique across dataset
+- No duplicate post.text across entire dataset
+- labels.threat_type must match user.assigned_threat
+- labels.risk_label must strictly follow the calibration rule above
+
+Now generate the full dataset as JSONL: EXACTLY 1500 lines, each line one JSON object.

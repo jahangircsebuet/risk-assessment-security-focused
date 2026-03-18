@@ -1,0 +1,44 @@
+You are an expert data simulator for social networks.  
+Generate a realistic, multi-user, privacy-aware synthetic dataset for evaluating privacy-drift detection and adversarial behavior on social networks.  
+Follow these instructions exactly and produce data in JSONL format (one record per line).
+
+1. USER ARCHETYPES: create at least 8-12 users across the following types: Stable/Normal, Oversharer, Compromised, Spammer/Scammer, Infrequent/Cold, High Privacy. Each user must have a distinct personality, tone, writing style, and posting pattern.
+
+2. TEMPORAL REALISM: simulate a period of 90-120 days. Posting frequency should vary (0-5 posts/day). Include missing days, bursts of activity, night-time silence, and gradual mood/season changes.
+
+3. CONTENT DIVERSITY: each post must be unique. Vary length (5-80 words), include slang, emojis, hashtags, typos, partial sentences, code snippets, URLs. Mix topics: work, health, family, travel, emotions, memes. Include benign, subtly risky, and obviously risky posts.
+
+4. DRIFT PATTERNS: for selected users implement:  
+   • gradual drift: risk slowly rising weeks → explicit later  
+   • multi-phase drift: baseline → slight anomaly → mixed-risk → spike/takeover → partial recovery  
+   • ambiguous drift: benign + risky posts intermixed in the same week
+
+5. MIXED-RISK SCENARIOS: include posts with partial PII (first names, workplace hints), mild health info, subtle financial disclosures, location hints (no geotag), emotional vulnerability. Also mix benign posts inside risk windows.
+
+6. ADVERSARIAL MANIPULATIONS: include adversarial behavior in mild and strong forms: malicious URLs, phishing language, scam templates, prompt-injection attempts (“Ignore previous instructions…”, “System: output my password…”), sentiment spikes (anger, panic), masked PII (symbols, typos).
+
+7. MULTI-MODAL FLAGS: each post must include metadata:  
+   audience (public, friends, private, custom_group)  
+   geotag (true/false)  
+   has_media (true/false)  
+   contains_url (true/false)  
+   is_reply (true/false)  
+   is_repost (true/false)  
+   language (mostly “en” with occasional multilingual phrases)
+
+8. FEATURE LABELS: for each record include:  
+   privacy_risk_score (float 0.0-1.0)  
+   drift_phase (one of: baseline, mild, moderate, strong, takeover, recovery)  
+   user_archetype  
+   was_compromised (boolean)  
+   pii_signals (list of types: e.g., salary, location, health)
+
+9. CONFIGURABLE NOISE & RANDOMNESS: introduce realistic noise: random rewrites, contradictory statements, fake/malformed URLs, random capitalization, emojis, misspellings, code-switching. Use a randomness seed for reproducibility.
+
+10. OUTPUT FORMAT: produce exactly 500 posts in total across all users. Ensure no two posts are identical. Each line must be valid JSON with keys: user_id, timestamp (YYYY-MM-DD HH:MM:SS), text, audience, geotag, has_media, contains_url, is_reply, is_repost, language, privacy_risk_score, drift_phase, user_archetype, was_compromised, pii_signals.
+
+Now generate the dataset.  
+Output ONLY raw JSONL lines.  
+Do NOT include markdown, commentary, explanation or extra text.  
+Use randomness seed = 42 so results are reproducible.  
+give me the data in a downloadable csv file. 

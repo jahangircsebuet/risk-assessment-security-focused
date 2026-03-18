@@ -1,0 +1,20 @@
+pip install pandas numpy matplotlib river \
+    bayesian-changepoint-detection \
+    signal-processing-algorithms openai
+
+# ADWIN via river
+# RiverML
+
+# BOCPD via bayesian-changepoint-detection
+# GitHub
+
+# E-Divisive via signal-processing-algorithms (MongoDB’s implementation)
+
+
+# A way to call the LLM prompt you already have (JSONL out).
+# A pure-Python synthetic generator with:
+# configurable drift severity
+# configurable adversary types / archetype mix
+# Code to load + preview a “real” dataset example.
+# Visualizations for privacy risk / drift phases.
+# Evaluation scripts for ADWIN, BOCPD, and E-Divisive.

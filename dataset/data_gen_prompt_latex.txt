@@ -1,0 +1,94 @@
+\begin{figure*}[t]
+\centering
+\begin{tcolorbox}[
+    colback=blue!5!white,
+    colframe=blue!60!black,
+    title=Prompt Template for Synthetic OSN Privacy Exposure Dataset Generation (CPRS-C Aligned),
+    fonttitle=\bfseries\small,
+    fontupper=\small,
+    coltitle=white,
+    boxrule=0.8pt,
+    arc=2pt,
+    outer arc=2pt,
+    left=6pt,right=6pt,top=6pt,bottom=6pt,
+    width=\textwidth
+]
+
+You are generating synthetic social media posts for research on \textbf{privacy exposure modeling} and CPRS-C risk estimation.
+
+\textbf{Important:} We distinguish between:
+(1) \textbf{Direct exposure signals} $x^{(E)}$ (linear exposure score) and  
+(2) \textbf{Contextual vulnerability cues} $x^{(V)}$ (bounded multiplicative modifiers).  
+Do \emph{not} diagnose mental health or infer latent traits; only generate \emph{observable} textual content.
+
+\textbf{Task:} Generate \textbf{one realistic OSN post} (50--200 words, casual tone).  
+Randomly choose \textbf{one} category:
+
+\begin{itemize}
+    \item \textbf{A)} Explicit PII exposure
+    \item \textbf{B)} Sensitive self-disclosure
+    \item \textbf{C)} Contextual vulnerability cues (no explicit PII)
+    \item \textbf{D)} Mixed exposure (Direct exposure + contextual cues)
+    \item \textbf{E)} Benign control (low risk)
+\end{itemize}
+
+\textbf{Controlled Direct Exposure Signals $x^{(E)}$:}
+\begin{itemize}
+    \item Explicit PII: \texttt{email / phone / address / ID / coordinate}
+    \item Sensitive disclosure: \texttt{health / finance / employment / legal\_immigration / relationship}
+    \item Location exposure (real-time presence or identifiable place) — NOT PII
+    \item Visibility amplifier: public $>$ friends $>$ private
+    \item External surface: URLs, contact requests, suspicious domains
+\end{itemize}
+
+\textbf{Contextual Vulnerability Cues $x^{(V)}$:}
+\begin{itemize}
+    \item \texttt{distress\_cues}
+    \item \texttt{urgency\_panic\_cues}
+    \item \texttt{crisis\_impulsivity\_cues}
+    \item \texttt{coercion\_solicitation\_cues}
+    \item \texttt{conflict\_harassment\_cues}
+    \item \texttt{oversharing\_regret\_boundary\_cues}
+\end{itemize}
+
+\textbf{Do NOT include:} violence instructions, illegal guidance, unrealistic extreme content, or diagnostic claims.
+
+\textbf{\#Output Format\#:} Return:
+\begin{itemize}
+    \item \textbf{(1) Post Text}
+    \item \textbf{(2) JSON Metadata}
+\end{itemize}
+
+\begin{verbatim}
+{
+  "category": "...",
+  "contains_pii": true/false,
+  "pii_type": "email/phone/address/ID/coordinate/none",
+  "sensitive_disclosure_type": "none/health/finance/employment/legal_immigration/relationship",
+  "location_exposure": true/false,
+  "visibility": "public/friends/private",
+  "external_surface": true/false,
+  "contextual_cues_present": [
+      "distress_cues",
+      "urgency_panic_cues",
+      "crisis_impulsivity_cues",
+      "coercion_solicitation_cues",
+      "conflict_harassment_cues",
+      "oversharing_regret_boundary_cues"
+  ]
+}
+\end{verbatim}
+
+\textbf{Consistency Rules:}
+\begin{itemize}
+    \item If category = C, then contains\_pii = false.
+    \item If category = A, then contains\_pii = true.
+    \item If category = E, then no exposure or vulnerability signals.
+    % \item Location exposure is independent of PII.
+    % \item Only include contextual cues that are observably present.
+\end{itemize}
+
+\end{tcolorbox}
+\caption{Prompt template for generating the synthetic OSN privacy exposure dataset aligned with the CPRS-C feature taxonomy.}
+\label{fig:synthetic-exposure-prompt}
+\end{figure*}

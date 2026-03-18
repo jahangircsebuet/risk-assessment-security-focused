@@ -1,0 +1,70 @@
+You are generating synthetic social media posts for research on privacy exposure modeling and CPRS-C risk estimation.
+Important: We distinguish between: (1) Direct exposure signals x(E) (linear exposure score) and (2) Contextual vulnerability cues x(V ) (bounded
+multiplicative modifiers). Do not diagnose mental health or infer latent traits; only generate observable textual content.
+User Setup (3 users only): There are exactly three users with fixed user_id and archetype:
+• user_01: Stable/Normal (consistent tone, moderate privacy awareness, mostly low risk)
+• user_02: Oversharer (chatty, self-disclosing, higher baseline risk, more emotional language)
+• user_03: Compromised (takeover-like bursts; sudden style shifts; suspicious links/contact requests)
+Temporal Realism: Simulate a period of 90–120 days. Each generated post MUST include a posting timestamp in ISO-8601 with timezone offset,
+e.g., "2026-01-14T21:37:12-06:00". Posting frequency varies (0-5 posts/day) with missing days, bursts of activity, night-time silence, and gradual
+mood/season changes.
+Drift Patterns (across time):
+• user_02 (Oversharer): gradual drift (risk slowly rises week-by-week → more explicit later)
+• user_03 (Compromised): multi-phase drift (baseline → slight anomaly → mixed-risk → spike/takeover → partial recovery)
+• user_01 (Stable): mostly stable with occasional ambiguous drift (benign + risky posts intermixed in the same week)
+Task: Generate one realistic OSN post (5–25 words, casual tone; may include slang, emojis, typos, hashtags, partial sentences, short code snippets, URLs).
+Randomly choose one category:
+• A) Explicit PII exposure
+• B) Sensitive self-disclosure
+• C) Contextual vulnerability cues (no explicit PII)
+• D) Mixed exposure (Direct exposure + contextual cues)
+• E) Benign control (low risk)
+Controlled Direct Exposure Signals x(E):
+• Explicit PII: email / phone / address / ID / coordinate
+• Sensitive disclosure: health / finance / employment / legal_immigration / relationship
+• Location exposure (real-time presence or identifiable place) — NOT PII
+• Visibility amplifier: public > friends > private
+• External surface: URLs, contact requests, suspicious domains
+Contextual Vulnerability Cues x(V ):
+• distress_cues
+• urgency_panic_cues
+• crisis_impulsivity_cues
+• coercion_solicitation_cues
+• conflict_harassment_cues
+• oversharing_regret_boundary_cues
+Mixed-Risk Scenarios (use often): include partial PII (first names, workplace hints), mild health info, subtle financial disclosures, location hints (no
+geotag), emotional vulnerability; also mix benign posts inside risk windows.
+Do NOT include: violence instructions, illegal guidance, unrealistic extreme content, or diagnostic claims.
+IMPORTANT OUTPUT REQUIREMENTS (MUST FOLLOW):
+• Output MUST be exactly ONE valid JSON object (no markdown, no extra text).
+• The JSON must be on a single line (no newlines inside strings).
+• Use JSON arrays/strings only (no raw comma-separated lists).
+• Ensure the JSON is parseable by json.loads without cleanup.
+Consistency Rules:
+• If category = C, then contains_pii = false.
+• If category = A, then contains_pii = true.
+• If category = E, then no exposure or vulnerability signals.
+• If contains_pii = false, then pii_type must be "none".
+• contextual_cues_present must be an array (possibly empty) containing only allowed cue strings.
+
+Return exactly one JSON object with the following keys (must be a single line; parseable by json.loads):
+{
+"user_id": "user_01/user_02/user_03",
+"timestamp": "YYYY-MM-DDTHH:MM:SS-06:00",
+"post_text": "...",
+"category": "A/B/C/D/E",
+"contains_pii": true/false,
+"pii_type": "email/phone/address/ID/coordinate/none",
+"sensitive_disclosure_type": "none/health/finance/employment/legal_immigration/relationship",
+"location_exposure": true/false,
+"visibility": "public/friends/private",
+"external_surface": true/false,
+"contextual_cues_present": [
+"distress_cues",
+"urgency_panic_cues",
+"crisis_impulsivity_cues",
+"coercion_solicitation_cues",
+"conflict_harassment_cues",
+"oversharing_regret_boundary_cues"
+]
+}
